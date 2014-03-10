@@ -235,16 +235,20 @@ Data::Graph* Model::GraphDAO::getGraph(QSqlDatabase* conn, bool* error2, qlonglo
 					newGraph->getMetaEdges()->find(edgeID).value()->setScale(edgeScales.value(edgeID));
 			}
 		}
-	}
+    newGraph->setEleIdCounter(maxIdEleUsed);
+    return newGraph;
+    }
 	else
 	{
 		qDebug() << "[Model::GraphDAO::getGraph] Error while loading data from database";
-	}
+        *error2 = error;
+    }
 
 	newGraph->setEleIdCounter(maxIdEleUsed);
-
+    /*
 	*error2 = error;
 	return newGraph;
+    */
 }
 
 Data::Graph* Model::GraphDAO::addGraph(QString graph_name, QSqlDatabase* conn)
