@@ -1088,7 +1088,7 @@ void Vwr::CameraManipulator::setRotationHead(float x, float y, float distance)
 
 
 		// will we correct projection according face position
-		bool projectionConrrection = false;
+        bool projectionConrrection;
 		projectionConrrection = this->appConf->getValue("FaceDecetion.EnableProjectionCorrection").toInt();
 
 		if( projectionConrrection ){
