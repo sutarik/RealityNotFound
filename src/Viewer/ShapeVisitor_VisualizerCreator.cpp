@@ -31,6 +31,7 @@ void ShapeVisitor_VisualizerCreator::visit (Layout::Shape_Composite & shape) {
 
 void ShapeVisitor_VisualizerCreator::visit (Layout::Shape_Intersection & shape) {
 	float radius;
+    radius = 0;
 	osg::Vec3 center;
 	//osg::Vec3 normalVector;
 

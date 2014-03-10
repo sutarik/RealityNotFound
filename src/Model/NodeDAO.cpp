@@ -348,7 +348,7 @@ QSqlQuery* Model::NodeDAO::getNodesQuery(QSqlDatabase* conn, bool* error, qlongl
 	query = new QSqlQuery(*conn);
 
 	//check if we have connection
-	if(conn==NULL || !conn->isOpen())
+    if(conn==NULL || !conn->isOpen())
 	{
 		qDebug() << "[Model::NodeDAO::getNodes] Connection to DB not opened.";
 		*error = TRUE;

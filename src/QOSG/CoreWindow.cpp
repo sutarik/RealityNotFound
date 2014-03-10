@@ -1364,12 +1364,12 @@ void CoreWindow::setRestriction_ConeTree (){
 
 	QList<qlonglong> groups = spanningTree->getAllGroups();
 	QList<qlonglong>::iterator groupIt;
-	for(groupIt=groups.begin(); groupIt!=groups.end();groupIt++){
+    for(groupIt=groups.begin(); groupIt!=groups.end();++groupIt){
 		if ((*groupIt) == 0) continue;
 		pickedNodes.clear();
 		QList<qlonglong> nodes = spanningTree->getNodesInGroup(*groupIt);
 		QList<qlonglong>::iterator nodeIt;
-		for(nodeIt=nodes.begin(); nodeIt!=nodes.end();nodeIt++){
+        for(nodeIt=nodes.begin(); nodeIt!=nodes.end();++nodeIt){
 			pickedNodes.append(allNodes->value(*nodeIt));
 		}
 		osg::ref_ptr<Data::Node> parentNode = allNodes->value(*groupIt);
@@ -1382,7 +1382,7 @@ void CoreWindow::setRestriction_ConeTree (){
 		QList<qlonglong> groups = spanningTree->getGroupsInDepth(depth);
 
 		QList<qlonglong>::iterator groupIt;
-		for(groupIt=groups.begin(); groupIt!=groups.end();groupIt++){
+        for(groupIt=groups.begin(); groupIt!=groups.end();++groupIt){
 			qlonglong nodeId = spanningTree->getRandomNodeInGroup(*groupIt);
 			pickedNodes.append(allNodes->value(nodeId));
 

@@ -785,7 +785,7 @@ osg::ref_ptr<Data::Node> Data::Graph::getMultiEdgeNeighbour(osg::ref_ptr<Data::E
 				return (*i)->getDstNode();
 			}
 		}
-		i++;
+        ++i;
 	}
 
 	return NULL;
@@ -846,7 +846,7 @@ bool Data::Graph::isParralel(osg::ref_ptr<Data::Node> srcNode, osg::ref_ptr<Data
 				break;
 			}
 		}
-		i++;
+        ++i;
 	}
 	return isMulti;
 }
@@ -897,7 +897,7 @@ Data::GraphLayout* Data::Graph::selectLayout( Data::GraphLayout* layout )
 					this->newTypes.remove(t->getId());
 					delete t;
 					t = NULL;
-				} else it++;
+                } else ++it;
 			}
 		}
 	}
@@ -913,7 +913,7 @@ Data::GraphSpanningTree* Data::Graph::getSpanningTree(qlonglong rootId){
 	QList<qlonglong> pickedNodes;
 
 	QMap<qlonglong, osg::ref_ptr<Data::Node> >::const_iterator itNode;
-	for(itNode = nodes->constBegin(); itNode != nodes->constEnd(); itNode++)
+    for(itNode = nodes->constBegin(); itNode != nodes->constEnd(); ++itNode)
 		visited[itNode.key()] = false;
 
 	visited[rootId] = true;
@@ -933,7 +933,7 @@ Data::GraphSpanningTree* Data::Graph::getSpanningTree(qlonglong rootId){
 		depthQueue.pop_back();
 
 		QMap< qlonglong,osg::ref_ptr<Data::Edge> >::const_iterator itEdge;
-		for (itEdge = parent->getEdges()->constBegin();  itEdge != parent->getEdges()->constEnd(); itEdge++){
+        for (itEdge = parent->getEdges()->constBegin();  itEdge != parent->getEdges()->constEnd(); ++itEdge){
 
 			osg::ref_ptr<Data::Node> srcNode = itEdge.value().get()->getSrcNode();
 			osg::ref_ptr<Data::Node> dstNode = itEdge.value().get()->getDstNode();
@@ -968,35 +968,35 @@ qlonglong Data::Graph::getMaxEleIdFromElements()
 
 	if(this->nodes!=NULL && !this->nodes->isEmpty()) {
 		QMap<qlonglong, osg::ref_ptr<Data::Node> >::iterator iNodes =  this->nodes->end();
-		iNodes--;
+        --iNodes;
 
 		if(iNodes.key()>max) max = iNodes.key();
 	}
 
 	if(this->nodes!=NULL && !this->types->isEmpty()) {
 		QMap<qlonglong, Data::Type*>::iterator iTypes =  this->types->end();
-		iTypes--;
+        --iTypes;
 
 		if(iTypes.key()>max) max = iTypes.key();
 	}
 
 	if(this->nodes!=NULL && !this->edges->isEmpty()) {
 		QMap<qlonglong, osg::ref_ptr<Data::Edge> >::iterator iEdges =  this->edges->end();
-		iEdges--;
+        --iEdges;
 
 		if(iEdges.key()>max) max = iEdges.key();
 	}
 
 	if(this->nodes!=NULL && !this->metaNodes->isEmpty()) {
 		QMap<qlonglong, osg::ref_ptr<Data::Node> >::iterator iMetaNodes =  this->metaNodes->end();
-		iMetaNodes--;
+        --iMetaNodes;
 
 		if(iMetaNodes.key()>max) max = iMetaNodes.key();
 	}
 
 	if(this->nodes!=NULL && !this->metaEdges->isEmpty()) {
 		QMap<qlonglong, osg::ref_ptr<Data::Edge> >::iterator iMetaEdges =  this->metaEdges->end();
-		iMetaEdges--;
+        --iMetaEdges;
 
 		if(iMetaEdges.key()>max) max = iMetaEdges.key();
 	}
