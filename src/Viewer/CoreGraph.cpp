@@ -204,7 +204,7 @@ osg::ref_ptr<osg::Group> CoreGraph::initEdgeLabels()
 	while (i != in_edges->end())
 	{
 		geode->addDrawable(i.value()->createLabel(i.value()->getName()));
-		i++;
+        ++i;
 	}
 
 	osg::ref_ptr<osg::Group> labels = new osg::Group;

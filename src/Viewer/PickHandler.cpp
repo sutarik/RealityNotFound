@@ -364,7 +364,7 @@ bool PickHandler::pick( const double xMin, const double yMin, const double xMax,
 	{
 		osgUtil::PolytopeIntersector::Intersections intersections = picker->getIntersections();
 
-		for(osgUtil::PolytopeIntersector::Intersections::iterator hitr = intersections.begin(); hitr != intersections.end(); hitr++)
+        for(osgUtil::PolytopeIntersector::Intersections::iterator hitr = intersections.begin(); hitr != intersections.end(); ++hitr)
 		{
 			if (!hitr->nodePath.empty())
 			{
@@ -739,7 +739,7 @@ osg::ref_ptr<Data::Node> PickHandler::getPickedNodeWithMaxEdgeCount(){
 	int maxEdges=0;
 	osg::ref_ptr<Data::Node> rootNode;
 	QLinkedList<osg::ref_ptr<Data::Node> >::const_iterator itNode;
-	for ( itNode = pickedNodes.constBegin (); itNode != pickedNodes.constEnd (); itNode++) {
+    for ( itNode = pickedNodes.constBegin (); itNode != pickedNodes.constEnd (); ++itNode) {
 		int actEdges = (*itNode)->getEdges()->size();
 		if ( actEdges>maxEdges){
 			rootNode=(*itNode);

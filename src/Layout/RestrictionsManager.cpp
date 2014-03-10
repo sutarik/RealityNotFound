@@ -67,7 +67,7 @@ void Layout::RestrictionsManager::setRestrictionToShape(
 		QSharedPointer<Layout::ShapeGetter> shapeGetter
 		){
 	QLinkedList<osg::ref_ptr<Data::Node> >::iterator nodeIt;
-	for (nodeIt=nodesOfShapeGettersToRestrict->begin(); nodeIt!=nodesOfShapeGettersToRestrict->end(); nodeIt++){
+    for (nodeIt=nodesOfShapeGettersToRestrict->begin(); nodeIt!=nodesOfShapeGettersToRestrict->end(); ++nodeIt){
 		QSharedPointer<Layout::ShapeGetter> shapeGetterToRestrict = getShapeGetter(*nodeIt);
 		shapeGetterToRestrict->allowRestriction();
 		shapeGetter->setInvisible(true);
