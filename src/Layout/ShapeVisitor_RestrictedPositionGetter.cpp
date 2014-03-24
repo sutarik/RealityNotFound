@@ -24,9 +24,10 @@ void ShapeVisitor_RestrictedPositionGetter::visit (Shape_Composite &shape)
 {
 	Shape_Composite::ShapesListType & shapes = shape.getShapes();
 
-    if (shapes.empty() > 0) {
+    if (!shapes.empty()) {
 		osg::Vec3f restrictedPositionWithMinDistance;
-		float minDistanceFound;
+        //Not initialized and is used [BUG] #needs deeper analysis
+        float minDistanceFound;
 		for (Shape_Composite::ShapesListType::const_iterator it = shapes.begin (); it != shapes.end (); ++it) {
 			(*it)->accept (*this); // restrictedPosition_ changes here
 

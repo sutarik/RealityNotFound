@@ -242,6 +242,7 @@ Data::Graph* Model::GraphDAO::getGraph(QSqlDatabase* conn, bool* error2, qlonglo
 	{
 		qDebug() << "[Model::GraphDAO::getGraph] Error while loading data from database";
         *error2 = error;
+        return newGraph;
     }
 
 	newGraph->setEleIdCounter(maxIdEleUsed);
