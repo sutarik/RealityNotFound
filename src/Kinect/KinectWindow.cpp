@@ -1,4 +1,5 @@
 #include "Kinect/KinectWindow.h"
+#include "Kinect/KinectThread.h"
 
 #include <QtGui/QPushButton>
 #include <QtGui/QLabel>
@@ -125,6 +126,7 @@ void Kinect::KinectWindow::pausewindows()
 	{
 		mKinectPause->setText(tr("Pause"));
 		emit startKinect();
+		emit sendImageKinect(true);
 	}
 	else if(mKinectPause->text().toStdString().compare(tr("Pause").toStdString())==0)
 	{
@@ -141,12 +143,12 @@ void Kinect::KinectWindow::pausewindows()
 
 void Kinect::KinectWindow::quitWindows()
 {
-	if(thr->isRunning())
+	if(this->thr->isRunning())
 	{
 		emit stopKinect(true);
-		thr->wait();
+		this->thr->wait();
 	}
-	delete thr;
+	delete this->thr;
 	delete this;
 
 }
@@ -160,5 +162,6 @@ void Kinect::KinectWindow::closeEvent(QCloseEvent *event)
 
 	disconnect();
 	event->accept();
+	this->deleteLater();
 }
 

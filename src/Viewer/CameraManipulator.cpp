@@ -51,7 +51,13 @@ Vwr::CameraManipulator::CameraManipulator(Vwr::CoreGraph * coreGraph)
 	this->coreGraph = coreGraph;
 	stop();
 
-	_cameraCanRot = true;
+	// dont rotate camera if video background
+	if( appConf->getValue("Viewer.SkyBox.Noise").toInt() == 2 ){
+		_cameraCanRot = false;
+	} else {
+		_cameraCanRot = true;
+	}
+
 }
 
 Vwr::CameraManipulator::~CameraManipulator()
@@ -1102,7 +1108,7 @@ void Vwr::CameraManipulator::setRotationHead(float x, float y, float distance)
 		}
 		if( y < -region || y > region ){
 			aux = y < 0.0f ? -step : step;
-			trackball(axisAux, angleAux, aux, 0.0, 0.0, 0.0);
+			trackball(axisAux, angleAux, 0.0, aux, 0.0, 0.0);
 			osg::Quat rotVerAux = osg::Quat(angleAux * throwScale, axisAux);
 			_rotationVerAux = _rotationVerAux * rotVerAux;
 		}
@@ -1193,7 +1199,15 @@ void Vwr::CameraManipulator::updateArucoGraphPosition( osg::Vec3d pos ){
 
 void Vwr::CameraManipulator::setCameraCanRot( bool cameraCanRot)
 {
-	_cameraCanRot = cameraCanRot;
+	//if SKYBOX 2 disable camera rotation
+	if(appConf->getValue("Viewer.SkyBox.Noise").toInt() != 2 )
+	{
+		_cameraCanRot = cameraCanRot;
+	}
+	else
+	{
+		_cameraCanRot=false;
+	}
 }
 
 #pragma GCC diagnostic pop

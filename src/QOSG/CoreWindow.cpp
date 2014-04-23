@@ -534,7 +534,16 @@ void CoreWindow::createAugmentedRealityToolBar() {
 	toolBar->addWidget( chb_camera_rot );
 	toolBar->addSeparator();
 
+
+	// dont rotate camera if video background
+	if( Util::ApplicationConfig::get()->getValue("Viewer.SkyBox.Noise").toInt() == 2 ){
+		chb_camera_rot->setChecked(false);
+	} else {
+		chb_camera_rot->setChecked(true);
+	}
+
 #ifdef OPENCV_FOUND
+
 #ifdef OPENNI2_FOUND
 #ifdef NITE2_FOUND
 
@@ -546,11 +555,12 @@ void CoreWindow::createAugmentedRealityToolBar() {
 	connect(b_start_kinect, SIGNAL(clicked()), this, SLOT(createKinectWindow()));
 	toolBar->addSeparator();
 
-	b_start_ransac = new QPushButton();
-	b_start_ransac->setText("Start calculate surface");
-	toolBar->addWidget( b_start_ransac );
-	connect(b_start_ransac, SIGNAL(clicked()), this, SLOT(calculateRansac()));
-	toolBar->addSeparator();
+	//TODO future feature - experimental state
+	//b_start_ransac = new QPushButton();
+	//b_start_ransac->setText("Start calculate surface");
+	//toolBar->addWidget( b_start_ransac );
+	//connect(b_start_ransac, SIGNAL(clicked()), this, SLOT(calculateRansac()));
+	//toolBar->addSeparator();
 
 #endif
 #endif

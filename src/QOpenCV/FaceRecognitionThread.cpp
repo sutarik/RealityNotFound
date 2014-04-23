@@ -11,6 +11,7 @@ QOpenCV::FaceRecognitionThread::FaceRecognitionThread( QObject *parent)
 	mCapVideo		= NULL;
 	mCancel			= false;
 	mSendImgEnabled	= true;
+	mSendBackgrImgEnabled = false;
 }
 
 
@@ -36,16 +37,20 @@ void QOpenCV::FaceRecognitionThread::run()
 		mFaceRecognizer->detectFaces( mCapVideo->getGrayframe() );
 		mFaceRecognizer->annotateFaces( image );
 
-		if( mSendImgEnabled ){
+		if( mSendImgEnabled && !image.empty()){
 			if (image.data)
 				emit pushImage( image.clone() ); // ???
 		}
+		if( mSendBackgrImgEnabled && !image.empty()){
+			emit pushBackgrImage( image.clone() );
+		}
+
 
 		if( mFaceRecognizer->detected ) { //&& mFaceRecognizer->isMovement
 			emit sendEyesCoords( (float) -mFaceRecognizer->getEyesCoords().x,
 								 (float) -mFaceRecognizer->getEyesCoords().y,
 								 -mFaceRecognizer->getHeadDistance( mCapVideo->getWidth()) );
-		}	
+		}
 		msleep(80);
 	}
 	mCapVideo->release();
@@ -67,6 +72,14 @@ void QOpenCV::FaceRecognitionThread::setSendImgEnabled( bool sendImgEnabled )
 	mSendImgEnabled = sendImgEnabled;
 }
 
+void QOpenCV::FaceRecognitionThread::setSendBackgrImgEnabled( bool sendBackgrImgEnabled )
+{
+	mSendBackgrImgEnabled = sendBackgrImgEnabled;
+}
+
+
+
 void QOpenCV::FaceRecognitionThread::setCapVideo( OpenCV::CapVideo *capVideo){
 	mCapVideo = capVideo;
 }
+
