@@ -7,6 +7,7 @@
  */
 
 #include "Data/Node.h"
+#include "Viewer/DataHelper.h"
 
 #include "Data/Graph.h"
 #include "Util/ApplicationConfig.h"
@@ -25,6 +26,7 @@ Data::Node::Node(qlonglong id, QString name, Data::Type* type, float scaling, Da
 	//konstruktor
 	//scaling je potrebne na zmensenie uzla ak je vnoreny
 	this->id = id;
+
 	this->name = name;
 	this->type = type;
 	this->mIsFocused = false;
@@ -275,8 +277,23 @@ osg::ref_ptr<osg::StateSet> Data::Node::createStateSet(Data::Type * type)
 	stateSet->setDataVariance(osg::Object::DYNAMIC);
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
-	if(type != 0)
-		stateSet->setTextureAttributeAndModes(0, type->getTypeTexture(), osg::StateAttribute::ON);
+	//if(type != 0)
+	if(name.compare("PNode")!=0)
+	{
+		QString path = "C:\\\\img2\\";
+		path.append(QString::number(id-3));
+		path.append("_veolia.png");
+
+		qDebug()<< path;
+
+		osg::ref_ptr<osg::Texture2D> texture =  Vwr::DataHelper::readTextureFromFile(path);
+		stateSet->setTextureAttributeAndModes(0,texture, osg::StateAttribute::ON);
+	}
+	else
+	{
+		stateSet->setTextureAttributeAndModes(0,type->getTypeTexture(), osg::StateAttribute::ON);
+	}
+
 
 	stateSet->setMode(GL_BLEND, osg::StateAttribute::ON);
 	stateSet->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
