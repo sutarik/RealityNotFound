@@ -8,7 +8,8 @@
 #include "Viewer/CameraManipulator.h"
 
 using namespace Kinect;
-Q_DECLARE_METATYPE(cv::Mat)
+//already in Aruco, been defined
+//Q_DECLARE_METATYPE(cv::Mat)
 
 Kinect::KinectCore * Kinect::KinectCore::mKinectCore;
 
@@ -23,7 +24,7 @@ Kinect::KinectCore::KinectCore( QApplication* app,QWidget *parent)
 	mThrsCreated=false;
 	mThrKinect=NULL;
 
-	qRegisterMetaType<cv::Mat>("Mat");
+	//qRegisterMetaType<cv::Mat>("Mat");
 }
 
 Kinect::KinectCore::~KinectCore()
@@ -100,7 +101,7 @@ void Kinect::KinectCore::createConnectionKinect()
 	QObject::connect( mThrKinect,
 					  SIGNAL(sendSliderCoords(float,float,float)),
 					  AppCore::Core::getInstance(NULL)->getCoreWindow()->getCameraManipulator(),
-					  SLOT(setRotationHead(float,float,float)) );
+					  SLOT(setRotationHeadKinect(float,float,float)) );
 
 	//enable/disable cursor movement
 	QObject::connect(mKinectDialog,

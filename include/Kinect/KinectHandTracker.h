@@ -7,6 +7,10 @@
 
 #define NUM_HANDS 2
 
+namespace Vwr{
+class MouseControl;
+}
+
 namespace Kinect{
 
 /**
@@ -15,7 +19,7 @@ namespace Kinect{
  */
 
 class KinectRecognition;
-class MouseControl;
+
 
 
 class KinectHandTracker{
@@ -55,7 +59,7 @@ private:
 	bool isClick;
 	bool isCursorMovementEnable;
 
-	MouseControl *mouse;
+	Vwr::MouseControl *mouse;
 	openni::VideoStream  *mDepth;
 
 	openni::CoordinateConverter coordinateConverter;

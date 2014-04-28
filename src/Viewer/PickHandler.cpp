@@ -196,6 +196,63 @@ bool PickHandler::handleKeyDown( const osgGA::GUIEventAdapter& ea, GUIActionAdap
 		Util::ElementSelector::weightedElementSelector(currentGraph->getNodes(), appConf->getValue("Viewer.PickHandler.AutopickedNodes").toInt(), this);
 	}
 
+	// FULLSCREEN
+	else if(ea.getKey() == 'l' || ea.getKey() == 'L')
+	{
+		bool hideToolbars = appConf->getValue("Viewer.Fullscreen").toInt();
+
+		if( AppCore::Core::getInstance()->getCoreWindow()->isFullScreen()){
+			AppCore::Core::getInstance()->getCoreWindow()->menuBar()->show();
+			AppCore::Core::getInstance()->getCoreWindow()->statusBar()->show();
+			AppCore::Core::getInstance()->getCoreWindow()->showNormal();
+
+			if(hideToolbars){
+				QList<QToolBar *> toolbars = AppCore::Core::getInstance()->getCoreWindow()->findChildren<QToolBar *>();
+				QListIterator<QToolBar *> i(toolbars);
+				while (i.hasNext()){
+					i.next()->show();
+				}
+			}
+		} else {
+			AppCore::Core::getInstance()->getCoreWindow()->menuBar()->hide();
+			AppCore::Core::getInstance()->getCoreWindow()->statusBar()->hide();
+			AppCore::Core::getInstance()->getCoreWindow()->showFullScreen();
+
+			if(hideToolbars){
+				QList<QToolBar *> toolbars = AppCore::Core::getInstance()->getCoreWindow()->findChildren<QToolBar *>();
+				QListIterator<QToolBar *> i(toolbars);
+				while (i.hasNext()){
+					i.next()->hide();
+				}
+			}
+
+		}
+	}
+
+	// toolbars only
+	else if(ea.getKey() == 't' || ea.getKey() == 'T')
+	{
+		static bool toolbars = true;
+		if( toolbars ){
+			toolbars = !toolbars;
+			QList<QToolBar *> toolbars = AppCore::Core::getInstance()->getCoreWindow()->findChildren<QToolBar *>();
+			QListIterator<QToolBar *> i(toolbars);
+			while (i.hasNext()){
+				i.next()->show();
+			}
+
+		} else {
+			toolbars = !toolbars;
+			QList<QToolBar *> toolbars = AppCore::Core::getInstance()->getCoreWindow()->findChildren<QToolBar *>();
+			QListIterator<QToolBar *> i(toolbars);
+			while (i.hasNext()){
+				i.next()->hide();
+			}
+		}
+
+	}
+
+
 	return false;
 }
 
@@ -587,7 +644,7 @@ void PickHandler::drawSelectionQuad(float origin_mX, float origin_mY, osgViewer:
 	coordinates->push_back(osg::Vec3(origin_mX, origin_mY, -1));
 	coordinates->push_back(osg::Vec3(origin_mX, origin_mY, -1));
 
-	colors->push_back(osg::Vec4(1,1,1,0.1f));
+	colors->push_back(osg::Vec4(0.2f, 0.2f, 1.0f, 0.3f));  // color of selection restangle
 
 	geometry->setVertexArray(coordinates);
 	geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS,0,4));

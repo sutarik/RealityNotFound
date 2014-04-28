@@ -10,9 +10,10 @@
 #include "OpenCV/CamSelectCore.h"
 #include "OpenCV/CapVideo.h"
 #include "OpenCV/CameraStream.h"
+#include "Viewer/MouseControl.h"
 
 Q_DECLARE_METATYPE(cv::Mat)
-
+Q_DECLARE_METATYPE(Qt::MouseButton)
 
 using namespace OpenCV;
 
@@ -31,6 +32,7 @@ OpenCV::OpenCVCore::OpenCVCore( QApplication* app, QWidget *parent)
 	mThrAruco		= NULL;
 
 	qRegisterMetaType<cv::Mat>("Mat");
+	qRegisterMetaType<Qt::MouseButton>("MouseButton");
 }
 OpenCV::OpenCVCore::~OpenCVCore(void)
 {
@@ -83,7 +85,7 @@ void  OpenCVCore::createPermanentConnection(){
 	QObject::connect( mThrFaceRec,
 					  SIGNAL(sendEyesCoords(float,float,float)),
 					  AppCore::Core::getInstance( mApp )->getCoreWindow()->getCameraManipulator(),
-					  SLOT(setRotationHead(float,float,float)) );
+					  SLOT(setRotationHeadFaceDet(float,float,float)) );
 
 	//  sending result data from aruco
 	QObject::connect( mThrAruco,
@@ -95,10 +97,6 @@ void  OpenCVCore::createPermanentConnection(){
 					  AppCore::Core::getInstance( mApp )->getCoreGraph(),
 					  SLOT(updateGraphRotByAruco(osg::Quat)) );
 
-	QObject::connect( mThrFaceRec,
-					  SIGNAL(sendEyesCoords(float,float,float)),
-					  AppCore::Core::getInstance( mApp)->getCoreWindow()->getCameraManipulator(),
-					  SLOT(setRotationHead(float,float,float)) );
 
 	// updating background image
 	QObject::connect( mThrFaceRec,
@@ -109,6 +107,11 @@ void  OpenCVCore::createPermanentConnection(){
 					  SIGNAL(pushBackgrImage(cv::Mat)),
 					  AppCore::Core::getInstance( mApp)->getCoreGraph()->getCameraStream(),
 					  SLOT(updateBackgroundImage(cv::Mat)) );
+
+	QObject::connect(mThrAruco,
+					 SIGNAL(moveMouseArucoSignal(double,double,bool,Qt::MouseButton)),
+					 AppCore::Core::getInstance()->getCoreWindow(),
+					 SLOT(moveMouseAruco(double,double,bool,Qt::MouseButton)));
 
 }
 
@@ -204,6 +207,11 @@ void OpenCVCore::createConnectionAruco(){
 					  mOpencvDialog,
 					  SLOT(onCorParUpdated()) );
 
+	// aruco mouse Controll
+	QObject::connect( mOpencvDialog->getInterchangeMarkersPB(),
+					  SIGNAL(clicked()),
+					  mThrAruco,
+					  SLOT(interchangeMarkers()) );
 
 }
 
